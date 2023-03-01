@@ -1,0 +1,7 @@
+.terraform/
+.terraform.lock.hcl
+3tier.pem
+terraform.tfstate
+terraform.tfstate.backup
+
+
