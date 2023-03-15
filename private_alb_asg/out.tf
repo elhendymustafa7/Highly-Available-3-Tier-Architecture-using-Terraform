@@ -7,6 +7,3 @@ output "ssh_security_group_id" {
 output "alb_security_group_id" {
   value = aws_security_group.alb-security-group.id
 }
-output "DB_security_group_id" {
-  value = aws_security_group.database-security-group.id
-}

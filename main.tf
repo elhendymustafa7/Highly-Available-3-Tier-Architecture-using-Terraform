@@ -33,15 +33,35 @@ module "private_subnet_db_tr" {
   nat_gateway_id    = module.nat.nat_id
 }
 
-module "alb" {
-  source = "./alb"
+module "sg" {
+  source = "./sg"
   vpc_id = module.vpc.vpc_id
   
 }
 
-module "sg" {
-  source = "./sg"
+module "public_alb_asg" {
+  source = "./public_alb_asg"
   vpc_id = module.vpc.vpc_id
-
+  image_id = "ami-05fa00d4c63e32376"
+  instance_type ="t2.micro"
+  webserver_security_group_id = module.sg.webserver_security_group_id 
+  public_subnet_ids = module.public_subnet_web_tr.public_subnet_ids
+  alb_security_group_id = module.sg.alb_security_group_id
+  availability_zone = ["us-east-1a", "us-east-1b"]
+}
+module "private_alb_asg" {
+  source = "./private_alb_asg"
+  vpc_id = module.vpc.vpc_id
+  image_id = "ami-05fa00d4c63e32376"
+  instance_type ="t2.micro"
+  webserver_security_group_id = module.sg.webserver_security_group_id 
+  public_subnet_ids = module.public_subnet_web_tr.public_subnet_ids
+  alb_security_group_id = module.sg.alb_security_group_id
+  availability_zone = ["us-east-1a", "us-east-1b"]
 }
 
+module "DB" {
+  source = "./DB"
+  subnets_ids = module.private_subnet_app_tr.private_subnet_ids
+  DB_security_group_id = module.sg.DB_security_group_id
+}

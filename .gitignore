@@ -1,6 +1,7 @@
 .terraform/
 .terraform.lock.hcl
 3tier.pem
+hello.pem
 terraform.tfstate
 terraform.tfstate.backup
 
